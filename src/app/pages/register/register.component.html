@@ -1,13 +1,13 @@
 <main class="register-container">
     <mat-card class="register-card">
         <mat-card-title>Regisztráció</mat-card-title>
+        <div style="margin: 10px">
+            <mat-card-subtitle>Már van fiókod?</mat-card-subtitle>
+            <a routerLink="/login"
+                ><button mat-button color="accent">Bejelentkezés</button></a
+            >
+        </div>
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-            <div style="margin: 10px">
-                <mat-card-subtitle>Már van fiókod?</mat-card-subtitle>
-                <a href="/login"
-                    ><button mat-button color="accent">Bejelentkezés</button></a
-                >
-            </div>
             <mat-form-field>
                 <mat-label>Email</mat-label>
                 <input
