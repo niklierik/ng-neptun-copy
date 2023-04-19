@@ -3,8 +3,7 @@ import {
     FormBuilder,
     Validators,
     FormGroup,
-    AbstractControl,
-    ValidationErrors,
+    ValidatorFn,
 } from "@angular/forms";
 
 @Component({
@@ -18,38 +17,32 @@ export class RegisterComponent {
         this.registerForm = this.formBuilder.group({
             email: ["", [Validators.required, Validators.email]],
             password: ["", Validators.required],
-            confirmPassword: ["", Validators.required],
+            confirmPassword: [
+                "",
+                [Validators.required, this.passwordMatch.bind(this)],
+            ],
             firstName: ["", Validators.required],
             lastName: ["", Validators.required],
             birthdate: ["", Validators.required],
             address: ["", Validators.required],
         });
-        this.registerForm.addValidators(this.passwordsMatchValidator);
     }
 
     onSubmit() {
         // Handle form submission
     }
 
-    private passwordsMatchValidator(
-        control: AbstractControl
-    ): ValidationErrors {
-        const password = control.get("password");
-        const confirmPassword = control.get("confirmPassword");
-        let errors: ValidationErrors = { passwordsDoNotMatch: false };
-        if (
-            password &&
-            confirmPassword &&
-            password.value !== confirmPassword.value
-                ? { passwordsDoNotMatch: true }
-                : null
-        ) {
-            errors = { passwordsDoNotMatch: true };
+    passwordMatch: ValidatorFn = () => {
+        if (this.passwordsDoNotMatch) {
+            return { passwordsDoNotMatch: this.passwordsDoNotMatch };
         }
-        return errors;
-    }
+        return null;
+    };
 
     get passwordsDoNotMatch() {
-        return this.registerForm.hasError("passwordsDoNotMatch");
+        return (
+            this.registerForm?.get("password")?.value !==
+            this.registerForm?.get("confirmPassword")?.value
+        );
     }
 }
