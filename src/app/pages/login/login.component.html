@@ -1,1 +1,35 @@
-<p>login works!</p>
+<mat-card class="login-card">
+    <mat-card-title>Login</mat-card-title>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+        <mat-form-field>
+            <mat-label>E-mail</mat-label>
+            <input matInput formControlName="email" required />
+            <mat-error *ngIf="loginForm.get('email')?.hasError('required')"
+                >E-mail cím</mat-error
+            >
+            <mat-error *ngIf="loginForm.get('email')?.hasError('email')"
+                >Kérlek érvényes E-mail címet adj meg.</mat-error
+            >
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Jelszó</mat-label>
+            <input
+                matInput
+                type="password"
+                formControlName="password"
+                required
+            />
+            <mat-error *ngIf="loginForm.get('password')?.hasError('required')"
+                >Jelszó szükséges</mat-error
+            >
+        </mat-form-field>
+        <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="loginForm.invalid"
+        >
+            Bejelentkezés
+        </button>
+    </form>
+</mat-card>
