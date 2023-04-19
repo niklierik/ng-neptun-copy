@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "neptun-copy": {
+      "hosting": {
+        "ng-neptun": [
+          "neptun-copy"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "neptun-copy"
+  }
+}
