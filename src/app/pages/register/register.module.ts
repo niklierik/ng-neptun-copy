@@ -16,7 +16,6 @@ import { MatCardModule } from "@angular/material/card";
     declarations: [RegisterComponent],
     imports: [
         FormsModule,
-        FormsModule,
         ReactiveFormsModule,
         MatInputModule,
         MatFormFieldModule,
