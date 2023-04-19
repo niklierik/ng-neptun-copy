@@ -9,8 +9,10 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
-            - run: echo "${{ secrets.ENV }}" > "src/environments/environment.ts"
-            - run: npm i && npm run build
+            - run: touch src/environments/environments.ts
+            - run: echo "${{ secrets.ENV }}" > src/environments/environments.ts
+            - run: npm i
+            - run: npm run build
             - uses: FirebaseExtended/action-hosting-deploy@v0
               with:
                   repoToken: "${{ secrets.GITHUB_TOKEN }}"
