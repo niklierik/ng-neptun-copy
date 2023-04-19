@@ -1,5 +1,11 @@
 <mat-card class="login-card">
     <mat-card-title>Bejelentkezés</mat-card-title>
+    <div style="margin: 10px">
+        <mat-card-subtitle>Még nincs fiókod?</mat-card-subtitle>
+        <a routerLink="/register"
+            ><button mat-button color="accent">Regisztráció</button></a
+        >
+    </div>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
         <mat-form-field>
             <mat-label>E-mail</mat-label>
