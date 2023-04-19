@@ -7,6 +7,10 @@ name: Deploy to Firebase Hosting on merge
         branches:
             - master
 jobs:
+    create_env_file:
+        runs-on: ubuntu-latest
+        steps:
+            -run: echo "${{ secrets.ENV }}" > "src/environments/environments.ts"
     build_and_deploy:
         runs-on: ubuntu-latest
         steps:
