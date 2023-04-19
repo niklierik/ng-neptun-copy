@@ -11,6 +11,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
+            - run: mkdir src/environments
             - run: touch src/environments/environments.ts
             - run: echo "${{ secrets.ENV }}" > src/environments/environments.ts
             - run: npm i
