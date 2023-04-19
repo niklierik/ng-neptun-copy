@@ -1,1 +1,86 @@
-<p>register works!</p>
+<main class="register-container">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <mat-form-field>
+            <input
+                matInput
+                type="email"
+                placeholder="Email"
+                formControlName="email"
+            />
+            <mat-error *ngIf="registerForm.controls['email'].hasError('email')"
+                >Please enter a valid email address</mat-error
+            >
+        </mat-form-field>
+
+        <mat-form-field>
+            <input
+                matInput
+                type="password"
+                placeholder="Password"
+                formControlName="password"
+            />
+        </mat-form-field>
+
+        <mat-form-field>
+            <input
+                matInput
+                type="password"
+                placeholder="Confirm Password"
+                formControlName="confirmPassword"
+            />
+            <mat-error *ngIf="passwordsDoNotMatch"
+                >Passwords do not match</mat-error
+            >
+        </mat-form-field>
+
+        <mat-form-field>
+            <input
+                matInput
+                type="text"
+                placeholder="First Name"
+                formControlName="firstName"
+            />
+        </mat-form-field>
+
+        <mat-form-field>
+            <input
+                matInput
+                type="text"
+                placeholder="Last Name"
+                formControlName="lastName"
+            />
+        </mat-form-field>
+
+        <mat-form-field>
+            <input
+                matInput
+                [matDatepicker]="birthdate"
+                placeholder="Birthdate"
+                formControlName="birthdate"
+            />
+            <mat-datepicker-toggle
+                matSuffix
+                [for]="birthdate"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #birthdate></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input
+                matInput
+                type="text"
+                placeholder="Address"
+                formControlName="address"
+            />
+        </mat-form-field>
+
+        <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="!registerForm.valid"
+        >
+            Register
+        </button>
+    </form>
+</main>
