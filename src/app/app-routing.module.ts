@@ -9,7 +9,33 @@ const routes: Routes = [
                 (m) => m.RegisterModule
             ),
     },
-    { path: 'login', loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule) },
+    {
+        path: "login",
+        loadChildren: () =>
+            import("./pages/login/login.module").then((m) => m.LoginModule),
+    },
+    {
+        path: "home",
+        loadChildren: () =>
+            import("./pages/home/home.module").then((m) => m.HomeModule),
+    },
+    {
+        path: "not-found",
+        loadChildren: () =>
+            import("./pages/not-found/not-found.module").then(
+                (m) => m.NotFoundModule
+            ),
+    },
+    {
+        pathMatch: "full",
+        path: "",
+        redirectTo: "home",
+    },
+    {
+        path: "**",
+        redirectTo: "not-found",
+        pathMatch: "full",
+    },
 ];
 
 @NgModule({
