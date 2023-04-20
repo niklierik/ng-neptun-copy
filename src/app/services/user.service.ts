@@ -1,16 +1,11 @@
 import { Injectable } from "@angular/core";
 import { Auth, signInWithEmailAndPassword, signOut } from "@angular/fire/auth";
 import {
-    collectionData,
     Firestore,
-    collection,
     doc,
     getDoc,
     DocumentSnapshot,
-    docData,
 } from "@angular/fire/firestore";
-import { Observable } from "@firebase/util";
-import { User } from "../models/user.model";
 
 @Injectable({
     providedIn: "root",
