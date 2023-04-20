@@ -1,23 +1,39 @@
 import { Injectable } from "@angular/core";
-import { AngularFireAuth } from "@angular/fire/compat/auth";
+import { Auth, signInWithEmailAndPassword } from "@angular/fire/auth";
+import {
+    collectionData,
+    Firestore,
+    collection,
+    doc,
+    getDoc,
+    DocumentSnapshot,
+} from "@angular/fire/firestore";
+import { Observable } from "@firebase/util";
 import { User } from "../models/user.model";
 
 @Injectable({
     providedIn: "root",
 })
 export class UserService {
-    constructor(private readonly auth: AngularFireAuth) {}
+    constructor(private readonly auth: Auth, private readonly db: Firestore) {}
 
-    async login(email: string, password: string): Promise<User | null> {
-        const result = await this.auth.signInWithEmailAndPassword(
+    async login(
+        email: string,
+        password: string,
+    ): Promise<DocumentSnapshot<User> | null> {
+        const result = await signInWithEmailAndPassword(
+            this.auth,
             email,
             password,
         );
-        if (result.user == null) {
+        if (result?.user?.email == null) {
             return null;
         }
-        return {
-            email: result.user.email,
-        };
+        const collectionRef = collection<User>(this.db);
+        const docRef = doc<User>(this.db, "users");
+        if (docRef == null) {
+            return null;
+        }
+        return getDoc<User>(docRef);
     }
 }
