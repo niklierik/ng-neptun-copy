@@ -31,6 +31,9 @@ export class UserService {
             return null;
         }
         const docRef = doc(this.db, `users/${email}`);
+        if (docRef?.id == null) {
+            return null;
+        }
         return getDoc(docRef);
     }
 
