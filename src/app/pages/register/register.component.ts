@@ -5,6 +5,7 @@ import {
     FormGroup,
     ValidatorFn,
 } from "@angular/forms";
+import { UserService } from "src/app/services/user.service";
 
 @Component({
     selector: "app-register",
@@ -13,7 +14,10 @@ import {
 })
 export class RegisterComponent {
     registerForm: FormGroup;
-    constructor(private formBuilder: FormBuilder) {
+    constructor(
+        private formBuilder: FormBuilder,
+        private readonly usersService: UserService,
+    ) {
         this.registerForm = this.formBuilder.group({
             email: ["", [Validators.required, Validators.email]],
             password: ["", Validators.required],
