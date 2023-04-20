@@ -22,10 +22,11 @@ export class LoginComponent {
 
     async onSubmit() {
         if (this.loginForm.valid) {
-            this.usersService.login(
-                this.loginForm.get("email"),
-                this.loginForm.get("password"),
+            return this.usersService.login(
+                this.loginForm.get("email")?.value,
+                this.loginForm.get("password")?.value,
             );
         }
+        return null;
     }
 }

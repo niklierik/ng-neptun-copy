@@ -33,8 +33,20 @@ export class RegisterComponent {
         });
     }
 
-    onSubmit() {
-        // Handle form submission
+    async onSubmit() {
+        if (this.registerForm.valid) {
+            return this.usersService.register(
+                this.registerForm.get("email")?.value,
+                this.registerForm.get("password")?.value,
+                this.registerForm.get("confirmPassword")?.value,
+                this.registerForm.get("firstName")?.value,
+                this.registerForm.get("lastName")?.value,
+                this.registerForm.get("birthdate")?.value,
+                this.registerForm.get("address")?.value,
+                this.registerForm.get("teacher")?.value,
+            );
+        }
+        return null;
     }
 
     passwordMatch: ValidatorFn = () => {

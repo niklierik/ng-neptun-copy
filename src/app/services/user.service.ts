@@ -1,5 +1,10 @@
 import { Injectable } from "@angular/core";
-import { Auth, signInWithEmailAndPassword, signOut } from "@angular/fire/auth";
+import {
+    Auth,
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword,
+    signOut,
+} from "@angular/fire/auth";
 import {
     Firestore,
     doc,
@@ -13,12 +18,47 @@ import {
 export class UserService {
     constructor(private readonly auth: Auth, private readonly db: Firestore) {}
 
-    async register(email: string, password: string, passwordAgain: string) {}
+    async register(
+        email?: string,
+        password?: string,
+        passwordAgain?: string,
+        firstname?: string,
+        lastname?: string,
+        birthdate?: string,
+        address?: string,
+        teacher?: boolean,
+    ) {
+        if (
+            !email ||
+            !password ||
+            !passwordAgain ||
+            !firstname ||
+            !lastname ||
+            !birthdate ||
+            !address ||
+            !teacher ||
+            password !== passwordAgain
+        ) {
+            return null;
+        }
+        const res = await createUserWithEmailAndPassword(
+            this.auth,
+            email,
+            password,
+        );
+        if (res?.user?.email == null) {
+            return null;
+        }
+        return res;
+    }
 
     async login(
-        email: string,
-        password: string,
+        email?: string,
+        password?: string,
     ): Promise<DocumentSnapshot | null> {
+        if (!email || !password) {
+            return null;
+        }
         const result = await signInWithEmailAndPassword(
             this.auth,
             email,
