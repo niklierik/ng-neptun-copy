@@ -20,9 +20,12 @@ export class LoginComponent {
         });
     }
 
-    onSubmit() {
+    async onSubmit() {
         if (this.loginForm.valid) {
-            // Perform login logic here
+            this.usersService.login(
+                this.loginForm.get("email"),
+                this.loginForm.get("password"),
+            );
         }
     }
 }

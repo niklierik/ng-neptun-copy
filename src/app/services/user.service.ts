@@ -31,7 +31,8 @@ export class UserService {
         if (docRef?.id == null) {
             return null;
         }
-        return getDoc(docRef);
+        const docSnapshot = await getDoc(docRef);
+        return docSnapshot;
     }
 
     async logout() {
