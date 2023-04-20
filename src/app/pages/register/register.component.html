@@ -8,7 +8,7 @@
             >
         </div>
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-            <mat-form-field>
+            <mat-form-field color="accent">
                 <mat-label>Email</mat-label>
                 <input
                     matNativeControl
@@ -22,7 +22,7 @@
                 >
             </mat-form-field>
 
-            <mat-form-field>
+            <mat-form-field color="accent">
                 <mat-label>Jelszó</mat-label>
                 <input
                     matNativeControl
@@ -32,7 +32,7 @@
                 />
             </mat-form-field>
 
-            <mat-form-field>
+            <mat-form-field color="accent">
                 <mat-label>Jelszó ismét</mat-label>
                 <input
                     matNativeControl
@@ -45,7 +45,7 @@
                 >
             </mat-form-field>
 
-            <mat-form-field>
+            <mat-form-field color="accent">
                 <mat-label>Vezetéknév</mat-label>
                 <input
                     matNativeControl
@@ -55,7 +55,7 @@
                 />
             </mat-form-field>
 
-            <mat-form-field>
+            <mat-form-field color="accent">
                 <mat-label>Keresztnév</mat-label>
                 <input
                     matNativeControl
@@ -65,7 +65,7 @@
                 />
             </mat-form-field>
 
-            <mat-form-field>
+            <mat-form-field color="accent">
                 <mat-label>Szül. dátum</mat-label>
                 <input
                     matNativeControl
@@ -80,7 +80,7 @@
                 <mat-datepicker #birthdate></mat-datepicker>
             </mat-form-field>
 
-            <mat-form-field>
+            <mat-form-field color="accent">
                 <mat-label>Lakcím</mat-label>
                 <input
                     matNativeControl
@@ -92,7 +92,7 @@
 
             <button
                 mat-raised-button
-                color="primary"
+                color="accent"
                 type="submit"
                 [disabled]="!registerForm.valid"
             >

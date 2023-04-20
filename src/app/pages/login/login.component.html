@@ -7,8 +7,8 @@
         >
     </div>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-        <mat-form-field>
-            <mat-label>E-mail</mat-label>
+        <mat-form-field color="accent">
+            <mat-label color="accent">E-mail</mat-label>
             <input matInput formControlName="email" required />
             <mat-error *ngIf="loginForm.get('email')?.hasError('required')"
                 >E-mail cím</mat-error
@@ -17,7 +17,7 @@
                 >Kérlek érvényes E-mail címet adj meg.</mat-error
             >
         </mat-form-field>
-        <mat-form-field>
+        <mat-form-field color="accent">
             <mat-label>Jelszó</mat-label>
             <input
                 matInput
@@ -31,7 +31,7 @@
         </mat-form-field>
         <button
             mat-raised-button
-            color="primary"
+            color="accent"
             type="submit"
             [disabled]="loginForm.invalid"
         >
