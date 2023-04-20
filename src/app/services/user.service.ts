@@ -7,6 +7,7 @@ import {
     doc,
     getDoc,
     DocumentSnapshot,
+    docData,
 } from "@angular/fire/firestore";
 import { Observable } from "@firebase/util";
 import { User } from "../models/user.model";
@@ -20,7 +21,7 @@ export class UserService {
     async login(
         email: string,
         password: string,
-    ): Promise<DocumentSnapshot<User> | null> {
+    ): Promise<DocumentSnapshot | null> {
         const result = await signInWithEmailAndPassword(
             this.auth,
             email,
@@ -29,11 +30,7 @@ export class UserService {
         if (result?.user?.email == null) {
             return null;
         }
-        const collectionRef = collection<User>(this.db);
-        const docRef = doc<User>(this.db, "users");
-        if (docRef == null) {
-            return null;
-        }
-        return getDoc<User>(docRef);
+        const docRef = doc(this.db, `users/${email}`);
+        return getDoc(docRef);
     }
 }
