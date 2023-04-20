@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { UserService } from "../../services/user.service";
 
 @Component({
     selector: "app-login",
@@ -9,16 +10,23 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 export class LoginComponent {
     loginForm: FormGroup;
 
-    constructor(private fb: FormBuilder) {
+    constructor(
+        private readonly fb: FormBuilder,
+        private readonly usersService: UserService,
+    ) {
         this.loginForm = this.fb.group({
             email: ["", [Validators.required, Validators.email]],
             password: ["", Validators.required],
         });
     }
 
-    onSubmit() {
+    async onSubmit() {
         if (this.loginForm.valid) {
-            // Perform login logic here
+            return this.usersService.login(
+                this.loginForm.get("email")?.value,
+                this.loginForm.get("password")?.value,
+            );
         }
+        return null;
     }
 }
