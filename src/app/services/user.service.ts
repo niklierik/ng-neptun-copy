@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Auth, signInWithEmailAndPassword } from "@angular/fire/auth";
+import { Auth, signInWithEmailAndPassword, signOut } from "@angular/fire/auth";
 import {
     collectionData,
     Firestore,
@@ -32,5 +32,9 @@ export class UserService {
         }
         const docRef = doc(this.db, `users/${email}`);
         return getDoc(docRef);
+    }
+
+    async logout() {
+        return signOut(this.auth);
     }
 }
