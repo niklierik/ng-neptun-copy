@@ -4,5 +4,5 @@ export interface Subject {
     name: string;
     credit: number;
     hoursAWeek: number;
-    courses: Course[];
+    courses: (Course | string)[];
 }

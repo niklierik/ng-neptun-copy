@@ -14,7 +14,7 @@ export interface Course {
     course: Course;
     day: DayOfWeek;
     hour: number;
-    subject: Subject;
+    subject: Subject | string;
     teachers: User[]; // e-mails
     students: User[]; // e-mails
 }
