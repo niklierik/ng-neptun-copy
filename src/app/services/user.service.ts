@@ -18,6 +18,8 @@ import { User } from "../models/user.model";
 export class UserService {
     constructor(private readonly auth: Auth, private readonly db: Firestore) {}
 
+    async register(email: string, password: string, passwordAgain: string) {}
+
     async login(
         email: string,
         password: string,

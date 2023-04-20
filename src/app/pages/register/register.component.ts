@@ -29,6 +29,7 @@ export class RegisterComponent {
             lastName: ["", Validators.required],
             birthdate: ["", Validators.required],
             address: ["", Validators.required],
+            teacher: [false],
         });
     }
 
