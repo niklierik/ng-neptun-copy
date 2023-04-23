@@ -1,9 +1,13 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
+import { collection, Firestore } from "@angular/fire/firestore";
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: "root",
 })
 export class SubjectService {
+    constructor(private readonly firestore: Firestore) {}
 
-  constructor() { }
+    getSubjects() {
+        const subjectsCol = collection(this.firestore, "subjects");
+    }
 }
