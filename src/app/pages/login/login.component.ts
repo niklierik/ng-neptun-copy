@@ -26,7 +26,7 @@ export class LoginComponent {
         });
     }
 
-    onSubmit() {
+    async onSubmit() {
         if (this.loginForm.valid) {
             this.disableLogin = true;
             this.usersService
@@ -41,6 +41,7 @@ export class LoginComponent {
                     this.disableLogin = false;
                 });
         }
+        return null;
     }
 
     get email() {
