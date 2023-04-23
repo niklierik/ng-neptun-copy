@@ -1,64 +1,56 @@
 import { Injectable } from "@angular/core";
+import { FirebaseError } from "@angular/fire/app";
 import {
     Auth,
-    signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
     signOut,
 } from "@angular/fire/auth";
 import {
-    Firestore,
     doc,
+    Firestore,
+    collection,
+    setDoc,
     getDoc,
-    DocumentSnapshot,
 } from "@angular/fire/firestore";
+import { RegisterComponent } from "../pages/register/register.component";
 
 @Injectable({
     providedIn: "root",
 })
 export class UserService {
-    constructor(private readonly auth: Auth, private readonly db: Firestore) {}
+    constructor(
+        private readonly auth: Auth,
+        private readonly firestore: Firestore,
+    ) {}
 
-    async register(
-        email?: string,
-        password?: string,
-        passwordAgain?: string,
-        firstname?: string,
-        lastname?: string,
-        birthdate?: string,
-        address?: string,
-        teacher?: boolean,
-    ) {
-        if (
-            !email ||
-            !password ||
-            !passwordAgain ||
-            !firstname ||
-            !lastname ||
-            !birthdate ||
-            !address ||
-            !teacher ||
-            password !== passwordAgain
-        ) {
-            return null;
+    async register(register: RegisterComponent) {
+        if (register.password !== register.passwordAgain) {
+            console.log(register);
+            throw "Jelszavak nem egyeznek";
         }
-        const res = await createUserWithEmailAndPassword(
+        const result = await createUserWithEmailAndPassword(
             this.auth,
-            email,
-            password,
+            register.email,
+            register.password,
         );
-        if (res?.user?.email == null) {
-            return null;
+        console.log("Regisztráció sikeres, adatok feltöltése...");
+        if (result?.user?.email == null) {
+            throw "Sikertelen regisztráció.";
         }
-        return res;
+        const usersCol = collection(this.firestore, "users");
+        const usersDoc = doc(usersCol, result.user.uid);
+        await setDoc(usersDoc, {
+            email: register.email,
+            birthdate: register.birthdate,
+            isTeacher: register.isTeacher,
+            familyname: register.familyname,
+            forename: register.forename,
+            address: register.address,
+        });
     }
 
-    async login(
-        email?: string,
-        password?: string,
-    ): Promise<DocumentSnapshot | null> {
-        if (!email || !password) {
-            return null;
-        }
+    async login(email: string, password: string) {
         const result = await signInWithEmailAndPassword(
             this.auth,
             email,
@@ -67,15 +59,51 @@ export class UserService {
         if (result?.user?.email == null) {
             return null;
         }
-        const docRef = doc(this.db, `users/${email}`);
-        if (docRef?.id == null) {
+        const usersCol = collection(this.firestore, "users");
+        const usersDoc = doc(usersCol, result.user.uid);
+        if (usersDoc?.id == null) {
             return null;
         }
-        const docSnapshot = await getDoc(docRef);
-        return docSnapshot;
+        const res = await getDoc(usersDoc);
+        const json = JSON.stringify(res);
+        console.log(json);
+        window.localStorage.setItem("user", json);
+        return res;
     }
 
     async logout() {
         return signOut(this.auth);
+    }
+
+    fireauthErrorPrettier(error: FirebaseError) {
+        switch (error.code) {
+            case "auth/email-already-in-use": {
+                return "Ez az email cím alatt már létezik felhasználó.";
+            }
+            case "auth/internal-error	": {
+                return "A Firebase nem működik, kérlek próbáld újra később.";
+            }
+            case "auth/invalid-email": {
+                return "Ez az email cím nem megfelelő.";
+            }
+            case "auth/invalid-password": {
+                return "A jelszó nem megfelelő. Legalább 6 karakterhosszúnak kell lenni-e.";
+            }
+            case "auth/user-not-found": {
+                return "Nem létezik ilyen felhasználó.";
+            }
+            case "auth/wrong-password": {
+                return "Érvénytelen jelszó.";
+            }
+        }
+        return error.code;
+    }
+
+    get currentUser() {
+        return this.auth.currentUser;
+    }
+
+    get isLoggedIn() {
+        return Boolean(this.currentUser);
     }
 }

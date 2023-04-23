@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
 import { UserService } from "../../services/user.service";
 
 @Component({
@@ -9,11 +10,16 @@ import { UserService } from "../../services/user.service";
 })
 export class LoginComponent {
     loginForm: FormGroup;
+    error: string;
+    disableLogin: boolean;
 
     constructor(
         private readonly fb: FormBuilder,
         private readonly usersService: UserService,
+        private readonly router: Router,
     ) {
+        this.disableLogin = false;
+        this.error = "";
         this.loginForm = this.fb.group({
             email: ["", [Validators.required, Validators.email]],
             password: ["", Validators.required],
@@ -22,11 +28,27 @@ export class LoginComponent {
 
     async onSubmit() {
         if (this.loginForm.valid) {
-            return this.usersService.login(
-                this.loginForm.get("email")?.value,
-                this.loginForm.get("password")?.value,
-            );
+            this.disableLogin = true;
+            this.usersService
+                .login(this.email, this.password)
+                .then(() => {
+                    this.router.navigate(["/home"]);
+                })
+                .catch((e) => {
+                    this.error = this.usersService.fireauthErrorPrettier(e);
+                })
+                .finally(() => {
+                    this.disableLogin = false;
+                });
         }
         return null;
+    }
+
+    get email() {
+        return this.loginForm.get("email")?.value;
+    }
+
+    get password() {
+        return this.loginForm.get("password")?.value;
     }
 }

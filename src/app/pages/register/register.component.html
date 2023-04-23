@@ -51,7 +51,7 @@
                     matNativeControl
                     type="text"
                     placeholder=""
-                    formControlName="firstName"
+                    formControlName="familyname"
                 />
             </mat-form-field>
 
@@ -61,7 +61,7 @@
                     matNativeControl
                     type="text"
                     placeholder=""
-                    formControlName="lastName"
+                    formControlName="forename"
                 />
             </mat-form-field>
 
@@ -97,10 +97,11 @@
                 mat-raised-button
                 color="accent"
                 type="submit"
-                [disabled]="!registerForm.valid"
+                [disabled]="!registerForm.valid || disableRegister"
             >
                 Regisztráció
             </button>
+            <p class="error-text">{{ error }}</p>
         </form>
     </mat-card>
 </main>
