@@ -11,7 +11,7 @@
             <mat-label color="accent">E-mail</mat-label>
             <input matInput formControlName="email" required />
             <mat-error *ngIf="loginForm.get('email')?.hasError('required')"
-                >E-mail cím</mat-error
+                >E-mail cím megadása szükséges</mat-error
             >
             <mat-error *ngIf="loginForm.get('email')?.hasError('email')"
                 >Kérlek érvényes E-mail címet adj meg.</mat-error
@@ -26,16 +26,17 @@
                 required
             />
             <mat-error *ngIf="loginForm.get('password')?.hasError('required')"
-                >Jelszó szükséges</mat-error
+                >Jelszó megadása szükséges</mat-error
             >
         </mat-form-field>
         <button
             mat-raised-button
             color="accent"
             type="submit"
-            [disabled]="loginForm.invalid"
+            [disabled]="loginForm.invalid || disableLogin"
         >
             Bejelentkezés
         </button>
+        <p class="error-text">{{ error }}</p>
     </form>
 </mat-card>
