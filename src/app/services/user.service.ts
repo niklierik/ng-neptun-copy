@@ -13,6 +13,7 @@ import {
     setDoc,
     getDoc,
 } from "@angular/fire/firestore";
+import { User } from "../models/user.model";
 import { RegisterComponent } from "../pages/register/register.component";
 
 @Injectable({
@@ -40,14 +41,17 @@ export class UserService {
         }
         const usersCol = collection(this.firestore, "users");
         const usersDoc = doc(usersCol, result.user.uid);
-        await setDoc(usersDoc, {
+        const userData = {
             email: register.email,
             birthdate: register.birthdate,
             isTeacher: register.isTeacher,
             familyname: register.familyname,
             forename: register.forename,
             address: register.address,
-        });
+        };
+        await setDoc(usersDoc, userData);
+        const json = JSON.stringify(userData);
+        window.localStorage.setItem("user", json);
     }
 
     async login(email: string, password: string) {
@@ -66,13 +70,13 @@ export class UserService {
         }
         const res = await getDoc(usersDoc);
         const json = JSON.stringify(res);
-        console.log(json);
         window.localStorage.setItem("user", json);
         return res;
     }
 
     async logout() {
-        return signOut(this.auth);
+        await signOut(this.auth);
+        window.localStorage.removeItem("user");
     }
 
     fireauthErrorPrettier(error: FirebaseError) {
@@ -97,6 +101,10 @@ export class UserService {
             }
         }
         return error.code;
+    }
+
+    get userData(): User {
+        return JSON.parse(localStorage.getItem("user") ?? "null");
     }
 
     get currentUser() {
