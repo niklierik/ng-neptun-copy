@@ -1,5 +1,15 @@
-<mat-card>
-    <mat-card-title>
-        {{ course?.subject }}
+<mat-card class="course-card">
+    <mat-card-title class="white-text">
+        {{ course?.subject?.name }}
     </mat-card-title>
+    <mat-card-subtitle> Tanárok </mat-card-subtitle>
+    <mat-list class="teacher-list">
+        <mat-list-item *ngFor="let teacher of course?.teachers ?? []">
+            <a [routerLink]="'/user/' + teacher.id">
+                <button mat-raised-button color="accent">
+                    {{ teacher.familyname + " " + teacher.forename }}
+                </button>
+            </a>
+        </mat-list-item>
+    </mat-list>
 </mat-card>

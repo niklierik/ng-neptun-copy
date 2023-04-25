@@ -25,6 +25,10 @@ export class UserService {
         private readonly firestore: Firestore,
     ) {}
 
+    get collection() {
+        return collection(this.firestore, "users");
+    }
+
     async register(register: RegisterComponent) {
         if (register.password !== register.passwordAgain) {
             console.log(register);
@@ -75,7 +79,9 @@ export class UserService {
     }
 
     async getUser(id: string): Promise<User | undefined> {
-        return (await (await getDoc(doc(this.firestore, id))).data()) as User;
+        const res = (await getDoc(doc(this.collection, id))).data() as User;
+        res.id = id;
+        return res;
     }
 
     async logout() {

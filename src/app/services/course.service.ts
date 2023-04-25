@@ -32,35 +32,61 @@ export class CourseService {
         return collectionGroup(this.firestore, "courses");
     }
 
-    async getAll() {
+    async getAll(): Promise<CourseUnpopulated[]> {
         const docRef = doc(
             collection(this.firestore, "users"),
             this.usersService.currentUser?.uid,
         );
         const filterByStudents = where("students", "array-contains", docRef);
         const res = await getDocs(query(this.collection, filterByStudents));
-        return res.docs.map((doc) => doc.data()) as Course[];
+        return res.docs.map((doc) => doc.data()) as CourseUnpopulated[];
+    }
+    async getAllPopulated(): Promise<Course[]> {
+        const courses = await this.getAll();
+        return Promise.all(courses.map((c) => this.populateCourse(c)));
+    }
+
+    async getCourse(id: string) {
+        const res = (
+            await getDoc(doc(this.collection, id))
+        ).data() as CourseUnpopulated;
+        res.id = id;
+        return res;
     }
 
     async populateCourse(course: CourseUnpopulated): Promise<Course> {
-        return {
-            subject: await this.subjectsService.getSubject(course.subject),
+        const res: Course = {
+            id: course.id,
+            subject: await this.subjectsService.getSubject(course.subject.id),
             students: (
-                await Promise.all(
-                    course.students.map(async (id) =>
-                        this.usersService.getUser(id),
-                    ),
-                )
-            ).filter((u) => u) as User[],
+                (
+                    await Promise.all(
+                        course.students.map(async (u) =>
+                            this.usersService.getUser(u.id),
+                        ),
+                    )
+                ).filter((u) => u) as User[]
+            ).sort((a, b) =>
+                (a.familyname + " " + a.forename).localeCompare(
+                    b.familyname + " " + b.forename,
+                ),
+            ),
             teachers: (
-                await Promise.all(
-                    course.teachers.map(async (id) =>
-                        this.usersService.getUser(id),
-                    ),
-                )
-            ).filter((u) => u) as User[],
+                (
+                    await Promise.all(
+                        course.teachers.map(async (u) =>
+                            this.usersService.getUser(u.id),
+                        ),
+                    )
+                ).filter((u) => u) as User[]
+            ).sort((a, b) =>
+                (a.familyname + " " + a.forename).localeCompare(
+                    b.familyname + " " + b.forename,
+                ),
+            ),
             day: course.day,
             hour: course.hour,
         };
+        return res;
     }
 }

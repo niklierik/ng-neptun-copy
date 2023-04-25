@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { collection, doc, Firestore, getDoc } from "@angular/fire/firestore";
-import { Subject } from "../models/subject.model";
+import { SubjectUnpopulated } from "../models/subject.model";
 
 @Injectable({
     providedIn: "root",
@@ -8,13 +8,16 @@ import { Subject } from "../models/subject.model";
 export class SubjectService {
     constructor(private readonly firestore: Firestore) {}
 
-    async getSubjects() {
-        const subjectsCol = collection(this.firestore, "subjects");
+    get collection() {
+        return collection(this.firestore, "subjects");
     }
 
-    async getSubject(id: string): Promise<Subject> {
-        return (
-            await getDoc(doc(collection(this.firestore, "subjects"), id))
-        ).data() as Subject;
+    async getSubjects() {}
+
+    async getSubject(id: string): Promise<SubjectUnpopulated> {
+        const docRef = doc(this.collection, id);
+        const res = (await getDoc(docRef)).data() as SubjectUnpopulated;
+        res.id = id;
+        return res;
     }
 }

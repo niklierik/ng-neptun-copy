@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { Course } from "src/app/models/course.model";
+import { Course, CourseUnpopulated } from "src/app/models/course.model";
 import { CourseService } from "src/app/services/course.service";
 
 @Component({
@@ -13,12 +13,12 @@ export class HomeComponent {
     constructor(private readonly courseService: CourseService) {
         this.courses = [];
         this.courseService
-            .getAll()
-            .then((c) => (this.courses = c as unknown as Course[]))
+            .getAllPopulated()
+            .then((courses) => (this.courses = courses))
             .catch((err) => console.log(err));
     }
 
-    stringify(course: Course) {
-        return JSON.stringify(course);
+    stringify(data: any) {
+        return JSON.stringify(data);
     }
 }
