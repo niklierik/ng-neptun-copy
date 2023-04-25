@@ -1,4 +1,9 @@
 <app-header></app-header>
-<div>
-    <p *ngFor="let course of courses">{{ stringify(course) }}</p>
-</div>
+<main>
+    <section class="courses-parent">
+        <app-course-card
+            *ngFor="let course of courses"
+            [course]="course"
+        ></app-course-card>
+    </section>
+</main>

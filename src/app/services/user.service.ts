@@ -74,6 +74,10 @@ export class UserService {
         return res;
     }
 
+    async getUser(id: string): Promise<User | undefined> {
+        return (await (await getDoc(doc(this.firestore, id))).data()) as User;
+    }
+
     async logout() {
         await signOut(this.auth);
         window.localStorage.removeItem("user");
