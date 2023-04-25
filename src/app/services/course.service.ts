@@ -39,11 +39,11 @@ export class CourseService {
             collection(this.firestore, "users"),
             this.usersService.currentUser?.uid,
         );
-        const filterByStudents = or(
+        const filterRelated = or(
             where("students", "array-contains", docRef),
             where("teachers", "array-contains", docRef),
         );
-        const res = await getDocs(query(this.collection, filterByStudents));
+        const res = await getDocs(query(this.collection, filterRelated));
         return res.docs.map((doc) => doc.data()) as CourseUnpopulated[];
     }
     async getAllPopulated(): Promise<Course[]> {

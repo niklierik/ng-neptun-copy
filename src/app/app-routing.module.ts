@@ -35,11 +35,24 @@ const routes: Routes = [
         canActivate: [AuthGuard],
     },
     {
+        path: "marks",
+        loadChildren: () =>
+            import("./pages/marks/marks.module").then((m) => m.MarksModule),
+        canActivate: [AuthGuard],
+    },
+    {
+        path: "write-mark",
+        loadChildren: () =>
+            import("./pages/write-mark/write-mark.module").then(
+                (m) => m.WriteMarkModule,
+            ),
+        canActivate: [AuthGuard],
+    },
+    {
         pathMatch: "full",
         path: "",
         redirectTo: "home",
     },
-    { path: 'marks', loadChildren: () => import('./pages/marks/marks.module').then(m => m.MarksModule) },
     {
         path: "**",
         redirectTo: "not-found",
