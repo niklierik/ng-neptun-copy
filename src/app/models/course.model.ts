@@ -1,6 +1,6 @@
 import { SubjectUnpopulated } from "./subject.model";
 import { UnpopulatedDoc } from "./unpopulated-doc";
-import { User } from "./user.model";
+import { UserUnpopulated } from "./user.model";
 
 export enum DayOfWeek {
     Monday = 1,
@@ -24,6 +24,36 @@ export interface Course {
     day: DayOfWeek;
     hour: number;
     subject: SubjectUnpopulated | undefined;
-    teachers: User[]; // e-mails
-    students: User[]; // e-mails
+    teachers: UserUnpopulated[]; // e-mails
+    students: UserUnpopulated[]; // e-mails
+}
+
+export function courseToString(course: Course) {
+    return course.subject?.name + " " + courseTime(course);
+}
+
+export function courseTime(course: Course) {
+    return (
+        dayOfWeekToString(course.day) +
+        " | " +
+        course.hour +
+        ":00 - " +
+        (course.hour + (course.subject?.hoursAWeek ?? 0)) +
+        ":00"
+    );
+}
+
+export function dayOfWeekToString(dayOfWeek: DayOfWeek) {
+    switch (dayOfWeek) {
+        case DayOfWeek.Monday:
+            return "Hétfő";
+        case DayOfWeek.Tuesday:
+            return "Kedd";
+        case DayOfWeek.Wednesday:
+            return "Szerda";
+        case DayOfWeek.Thursday:
+            return "Csütörtök";
+        case DayOfWeek.Friday:
+            return "Péntek";
+    }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { forwardRef, Inject, Injectable } from "@angular/core";
 import { FirebaseError } from "@angular/fire/app";
 import {
     Auth,
@@ -13,8 +13,10 @@ import {
     setDoc,
     getDoc,
 } from "@angular/fire/firestore";
-import { User } from "../models/user.model";
+import { CourseUnpopulated } from "../models/course.model";
+import { User, UserUnpopulated } from "../models/user.model";
 import { RegisterComponent } from "../pages/register/register.component";
+import { CourseService } from "./course.service";
 
 @Injectable({
     providedIn: "root",
@@ -27,6 +29,22 @@ export class UserService {
 
     get collection() {
         return collection(this.firestore, "users");
+    }
+
+    async getPopulatedUser(id: string) {
+        const user = await this.getUser(id);
+        if (user == null) {
+            return undefined;
+        }
+        return this.populate(user);
+    }
+
+    async getCourse(id: string) {
+        const res = (
+            await getDoc(doc(collection(this.firestore, "courses"), id))
+        ).data() as CourseUnpopulated;
+        res.id = id;
+        return res;
     }
 
     async register(register: RegisterComponent) {
@@ -78,8 +96,19 @@ export class UserService {
         return res;
     }
 
-    async getUser(id: string): Promise<User | undefined> {
-        const res = (await getDoc(doc(this.collection, id))).data() as User;
+    async populate(user: UserUnpopulated): Promise<User> {
+        return {
+            ...user,
+            relatedCourses: await Promise.all(
+                user.relatedCourses.map(async (c) => this.getCourse(c.id)),
+            ),
+        };
+    }
+
+    async getUser(id: string): Promise<UserUnpopulated | undefined> {
+        const res = (
+            await getDoc(doc(this.collection, id))
+        ).data() as UserUnpopulated;
         res.id = id;
         return res;
     }
@@ -113,7 +142,7 @@ export class UserService {
         return error.code;
     }
 
-    get userData(): User {
+    get userData(): UserUnpopulated {
         return JSON.parse(localStorage.getItem("user") ?? "null");
     }
 
