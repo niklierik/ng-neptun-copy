@@ -39,6 +39,7 @@ const routes: Routes = [
         path: "",
         redirectTo: "home",
     },
+    { path: 'marks', loadChildren: () => import('./pages/marks/marks.module').then(m => m.MarksModule) },
     {
         path: "**",
         redirectTo: "not-found",
