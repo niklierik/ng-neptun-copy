@@ -1,29 +1,30 @@
 .register-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    margin: 5px;
 }
 
 .register-container form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
 }
 
 mat-form-field {
-  width: 100%;
-  margin: 16px 0;
+    width: 100%;
+    margin: 16px 0;
 }
 
 .register-card {
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 32px;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 32px;
 }
 
 mat-card-title {
-  color:white;
+    color: white;
 }

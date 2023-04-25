@@ -1,6 +1,13 @@
 <app-header></app-header>
-<mat-card class="user-card">
-    <mat-card-title class="white-text">
-        {{ user?.familyname + " " + user?.forename }}
+<mat-card class="user-card white-text">
+    <mat-card-title>
+        {{ user?.familyname + " " + user?.forename }} | {{ user?.email }}
     </mat-card-title>
+    <mat-card-subtitle>{{ teacherTxt() }}</mat-card-subtitle>
+    <p>Cím: {{ user?.address }}</p>
+    <p>Születési dátum {{ user?.birthdate | timestampDate }}</p>
+    <mat-card-subtitle>{{ teacherTxt2() }}</mat-card-subtitle>
+    <p *ngFor="let course of courses ?? []">
+        {{ courseStr(course) }}
+    </p>
 </mat-card>

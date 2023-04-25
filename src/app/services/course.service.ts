@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { forwardRef, Inject, Injectable } from "@angular/core";
 import {
     collectionGroup,
     doc,
@@ -8,9 +8,9 @@ import {
     query,
     where,
 } from "@angular/fire/firestore";
-import { collection } from "@firebase/firestore";
+import { collection, or } from "@firebase/firestore";
 import { Course, CourseUnpopulated } from "../models/course.model";
-import { User } from "../models/user.model";
+import { UserUnpopulated } from "../models/user.model";
 import { SubjectService } from "./subject.service";
 import { UserService } from "./user.service";
 
@@ -20,7 +20,9 @@ import { UserService } from "./user.service";
 export class CourseService {
     constructor(
         private readonly firestore: Firestore,
+        @Inject(forwardRef(() => UserService))
         private readonly usersService: UserService,
+        @Inject(forwardRef(() => SubjectService))
         private readonly subjectsService: SubjectService,
     ) {}
 
@@ -37,7 +39,10 @@ export class CourseService {
             collection(this.firestore, "users"),
             this.usersService.currentUser?.uid,
         );
-        const filterByStudents = where("students", "array-contains", docRef);
+        const filterByStudents = or(
+            where("students", "array-contains", docRef),
+            where("teachers", "array-contains", docRef),
+        );
         const res = await getDocs(query(this.collection, filterByStudents));
         return res.docs.map((doc) => doc.data()) as CourseUnpopulated[];
     }
@@ -65,7 +70,7 @@ export class CourseService {
                             this.usersService.getUser(u.id),
                         ),
                     )
-                ).filter((u) => u) as User[]
+                ).filter((u) => u) as UserUnpopulated[]
             ).sort((a, b) =>
                 (a.familyname + " " + a.forename).localeCompare(
                     b.familyname + " " + b.forename,
@@ -78,7 +83,7 @@ export class CourseService {
                             this.usersService.getUser(u.id),
                         ),
                     )
-                ).filter((u) => u) as User[]
+                ).filter((u) => u) as UserUnpopulated[]
             ).sort((a, b) =>
                 (a.familyname + " " + a.forename).localeCompare(
                     b.familyname + " " + b.forename,

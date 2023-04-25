@@ -1,10 +1,11 @@
 .course-card {
-  padding: 10px;
-  display: flex;
-  width: fit-content;
-  max-width: fit-content;
+    padding: 10px;
+    display: flex;
+    width: fit-content;
+    max-width: fit-content;
 }
 
-.teacher-list * {
-  width: 100%;
+.teacher-list *,
+.student-list * {
+    width: 100%;
 }
