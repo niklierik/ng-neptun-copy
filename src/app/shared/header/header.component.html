@@ -1,7 +1,7 @@
 <div>
     <mat-toolbar color="accent">
         <span style="margin: 2px 6px">Neptun Copy</span>
-        <button mat-button routerLink="/home">Főoldal</button>
+        <button [routerLink]="['/home']" mat-button>Főoldal</button>
         <button mat-button routerLink="/about">About</button>
         <button mat-button routerLink="/contact">Contact</button>
         <button mat-button (click)="logout()">Kijelentkezés</button>

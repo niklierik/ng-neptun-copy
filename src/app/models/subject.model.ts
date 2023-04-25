@@ -1,8 +1,18 @@
-import { Course } from "./course.model";
+import { Course, CourseUnpopulated } from "./course.model";
+import { UnpopulatedDoc } from "./unpopulated-doc";
 
-export interface Subject {
+export interface SubjectUnpopulated {
+    id: string;
     name: string;
     credit: number;
     hoursAWeek: number;
-    courses: (Course | string)[];
+    courses: UnpopulatedDoc[];
+}
+
+export interface Subject {
+    id: string;
+    name: string;
+    credit: number;
+    hoursAWeek: number;
+    courses: CourseUnpopulated[];
 }

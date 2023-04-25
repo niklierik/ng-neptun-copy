@@ -29,6 +29,12 @@ const routes: Routes = [
             ),
     },
     {
+        path: "user",
+        loadChildren: () =>
+            import("./pages/user/user.module").then((m) => m.UserModule),
+        canActivate: [AuthGuard],
+    },
+    {
         pathMatch: "full",
         path: "",
         redirectTo: "home",

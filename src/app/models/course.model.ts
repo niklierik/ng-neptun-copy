@@ -1,6 +1,6 @@
-import { Subject } from "./subject.model";
-
-type User = string; //  e-mail
+import { SubjectUnpopulated } from "./subject.model";
+import { UnpopulatedDoc } from "./unpopulated-doc";
+import { User } from "./user.model";
 
 export enum DayOfWeek {
     Monday = 1,
@@ -10,11 +10,20 @@ export enum DayOfWeek {
     Friday = 5,
 }
 
-export interface Course {
-    course: Course;
+export interface CourseUnpopulated {
+    id: string;
     day: DayOfWeek;
     hour: number;
-    subject: Subject | string;
+    subject: UnpopulatedDoc;
+    teachers: UnpopulatedDoc[]; // e-mails
+    students: UnpopulatedDoc[]; // e-mails
+}
+
+export interface Course {
+    id: string;
+    day: DayOfWeek;
+    hour: number;
+    subject: SubjectUnpopulated | undefined;
     teachers: User[]; // e-mails
     students: User[]; // e-mails
 }
