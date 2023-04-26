@@ -123,11 +123,11 @@ export class UserService {
             case "auth/email-already-in-use": {
                 return "Ez az email cím alatt már létezik felhasználó.";
             }
-            case "auth/internal-error	": {
+            case "auth/internal-error": {
                 return "A Firebase nem működik, kérlek próbáld újra később.";
             }
             case "auth/invalid-email": {
-                return "Ez az email cím nem megfelelő.";
+                return "Érvénytelen e-mail cím.";
             }
             case "auth/invalid-password": {
                 return "A jelszó nem megfelelő. Legalább 6 karakterhosszúnak kell lenni-e.";
