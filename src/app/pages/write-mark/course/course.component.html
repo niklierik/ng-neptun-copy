@@ -1,0 +1,16 @@
+<mat-divider></mat-divider>
+<h3>
+    {{ course?.subject?.name }}
+</h3>
+<div *ngFor="let student of course?.students ?? []">
+    <p>{{ student.familyname }} {{ student.forename }} ({{ student.email }})</p>
+    <mat-form-field appearance="fill" form>
+        <mat-label>Jegy</mat-label>
+        <mat-select [value]="''">
+            <mat-option value="">Nincs</mat-option>
+            <mat-option *ngFor="let mark of marks" [value]="mark">{{
+                mark
+            }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>

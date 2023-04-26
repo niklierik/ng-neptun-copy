@@ -1,0 +1,16 @@
+<app-header></app-header>
+<main class="white-text">
+    <div class="m-5 p-5">
+        <p>Átlag: {{ avg }}</p>
+    </div>
+    <div class="m-5 p-5" *ngFor="let mark of marks">
+        <mat-divider></mat-divider>
+        <h3>
+            {{ mark.subject?.name }}
+        </h3>
+        <p>
+            Érdemjegy: {{ mark.mark }} | Kredit:
+            {{ mark.subject?.credit }}
+        </p>
+    </div>
+</main>

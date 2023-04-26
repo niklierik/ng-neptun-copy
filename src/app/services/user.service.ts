@@ -91,7 +91,7 @@ export class UserService {
             return null;
         }
         const res = await getDoc(usersDoc);
-        const json = JSON.stringify(res);
+        const json = JSON.stringify(res.data());
         window.localStorage.setItem("user", json);
         return res;
     }
